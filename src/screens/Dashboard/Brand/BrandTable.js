@@ -2,14 +2,25 @@ import Card from "@material-tailwind/react/Card";
 import CardHeader from "@material-tailwind/react/CardHeader" ;
 import CardBody from "@material-tailwind/react/CardBody";
 import {useHistory} from "react-router-dom";
+import {useQuery} from "react-query";
+import {ALL_BRANDS} from "../query";
+import MainLayout from "../layouts/MainLayout";
+import {useEffect} from "react";
+
 
 const BrandTable = () => {
     const history = useHistory();
     const handleButtonClick = () => {
         history.push('/dashboard/addbrand');
     }
+    const {data: brands, refetch: getAllBrands} = useQuery(ALL_BRANDS);
+
+    useEffect(() => {
+        getAllBrands();
+    }, []);
+
     return (
-        <div className="mt-6">
+        <MainLayout>
             <Card>
                 <CardHeader className="flex" color="purple" contentPosition="center">
                     <div className="flex w-full justify-between ">
@@ -31,21 +42,13 @@ const BrandTable = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th className="border-b text-center border-gray-200 align-middle text-black text-sm whitespace-nowrap px-2 py-4 text-left">
-                                    POLO
-                                </th>
-                            </tr>
-                            <tr>
-                                <th className="border-b text-center border-gray-200 align-middle text-black text-sm whitespace-nowrap px-2 py-4 text-left">
-                                    NIKE
-                                </th>
-                            </tr>
-                            <tr>
-                                <th className="border-b text-center border-gray-200 align-middle text-black text-sm whitespace-nowrap px-2 py-4 text-left">
-                                    ADIDAS
-                                </th>
-                            </tr>
+                            {brands && brands.map((brands) => (
+                                <tr key={brands?.id}>
+                                    <th className="border-b text-center border-gray-200 align-middle text-black text-sm whitespace-nowrap px-2 py-4 text-left">
+                                        {brands?.name}
+                                    </th>
+                                </tr>
+                            )) }
                             </tbody>
 
                         </table>
@@ -53,7 +56,7 @@ const BrandTable = () => {
 
                 </CardBody>
             </Card>
-        </div>
+        </MainLayout>
     )
 }
 

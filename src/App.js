@@ -3,18 +3,27 @@ import {Route, Switch} from "react-router-dom";
 import "@material-tailwind/react/tailwind.css";
 import Sidebar from "./screens/Dashboard/Sidebar";
 import Home from "./screens/Dashboard";
-import ProductTable from "./screens/Dashboard/Product/Table";
+import ProductTable from "./screens/Dashboard/Product/ProductTable";
 import './assets/styles/tailwind.css';
-import AddNewProduct from "./screens/Dashboard/Product/AddNewProduct";
+import ProductForm from "./screens/Dashboard/Product/ProductForm";
 import CategoryTable from "./screens/Dashboard/Category/CategoryTable";
-import AddCategory from "./screens/Dashboard/Category/AddCategory";
+import AddCategory from "./screens/Dashboard/Category/CategoryForm";
 import BrandTable from "./screens/Dashboard/Brand/BrandTable";
-import AddBrand from "./screens/Dashboard/Brand/AddBrand";
+import BrandForm from "./screens/Dashboard/Brand/BrandForm";
 import UserTable from "./screens/Dashboard/User/UserTable";
 import AddUser from "./screens/Dashboard/User/AddUser";
+import {getAxiosConnection} from "./API";
+import {useEffect} from "react";
 
 
 const App = (props) => {
+
+
+    //setup axios connection
+    useEffect(() => {
+        getAxiosConnection();
+    }, [])
+
     return (
 
             <div className="md:ml-64">
@@ -27,7 +36,7 @@ const App = (props) => {
                             <ProductTable/>
                         </Route>
                         <Route path={`/dashboard/AddNew`}>
-                            <AddNewProduct />
+                            <ProductForm />
                         </Route>
                         <Route path={`/dashboard/categories`}>
                             <CategoryTable />
@@ -39,7 +48,7 @@ const App = (props) => {
                             <BrandTable />
                         </Route>
                         <Route path={`/dashboard/addbrand`}>
-                            <AddBrand />
+                            <BrandForm />
                         </Route>
                         <Route path={`/dashboard/users`}>
                             <UserTable />

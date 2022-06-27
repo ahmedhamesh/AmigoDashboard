@@ -1,15 +1,28 @@
+import {useEffect} from "react";
 import Card from "@material-tailwind/react/Card";
 import CardHeader from "@material-tailwind/react/CardHeader" ;
 import CardBody from "@material-tailwind/react/CardBody";
 import {useHistory} from "react-router-dom";
+import {useQuery} from "react-query";
+import {ALL_CATEGORIES} from "../query";
+import MainLayout from "../layouts/MainLayout";
 
 const CategoryTable = () => {
     const history = useHistory();
     const handleButtonClick = () => {
         history.push('/dashboard/addcategory');
     }
+
+    const {data: categories, refetch: getAllCategory} = useQuery(ALL_CATEGORIES);
+    
+    useEffect(() => {
+        getAllCategory();
+    }, []);
+    
+    console.log("categories: ", categories);
+
     return (
-        <div className="mt-6">
+        <MainLayout>
         <Card>
            <CardHeader className="flex" color="purple" contentPosition="center">
                <div className="flex w-full justify-between ">
@@ -31,21 +44,14 @@ const CategoryTable = () => {
                     </tr>
                     </thead>
                     <tbody>
-                     <tr>
-                         <th className="border-b text-center border-gray-200 align-middle text-black text-sm whitespace-nowrap px-2 py-4 text-left">
-                             T-Shirt
-                         </th>
-                     </tr>
-                     <tr>
-                         <th className="border-b text-center border-gray-200 align-middle text-black text-sm whitespace-nowrap px-2 py-4 text-left">
-                             Jackets
-                         </th>
-                     </tr>
-                     <tr>
-                         <th className="border-b text-center border-gray-200 align-middle text-black text-sm whitespace-nowrap px-2 py-4 text-left">
-                             Jeans
-                         </th>
-                     </tr>
+                    {categories && categories.map((category) => (
+                        <tr key={category?.id}>
+                            <th className="border-b text-center border-gray-200 align-middle text-black text-sm whitespace-nowrap px-2 py-4 text-left">
+                                {category?.name}
+                            </th>
+                        </tr>
+                    )) }
+
                     </tbody>
 
                 </table>
@@ -53,7 +59,7 @@ const CategoryTable = () => {
 
             </CardBody>
         </Card>
-        </div>
+        </MainLayout>
     )
 }
 
